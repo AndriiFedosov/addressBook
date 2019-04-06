@@ -2,25 +2,17 @@ package dao;
 
 import entity.Contact;
 
-public class ContactDao {
+public interface ContactDao {
 
-    public static int generator = 0;
+    void saveContact(Contact contact);
 
-    Contact[] store = new Contact[10];
+    Contact getContactById(int contactId);
 
-    public void saveContact(Contact contact) {
-        for (int argument = 0; argument < store.length; argument++) {
-            if (store[argument] == null) {
-                contact.setId(++generator);
-                store[argument] = contact;
-                System.out.println("This contact was added in your contact book");
-                System.out.println(contact.toString());
-                break;
-            }
-        }
-    }
+    Contact updateContactById(int contactId);
 
-    public Contact[] getStore() {
-        return store;
-    }
+    void deleteById(int id);
+
+    void showContacts();
+
+    void deleteContactByEntity(Contact contact);
 }

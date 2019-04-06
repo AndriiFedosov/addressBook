@@ -1,15 +1,15 @@
-package service;
+package service.impl;
 
-import dao.ContactDao;
-import entity.Contact;
+import dao.impl.ContactDaoImpl;
+import service.CommandLineService;
 
 import java.util.Scanner;
 
-public class ComandLineService {
+public class CommandLineServiceImpl implements CommandLineService {
 
     private static final Scanner scanner = new Scanner(System.in);
 
-    private static final ContactService service = new ContactService(new ContactDao());
+    private static final ContactServiceImpl service = new ContactServiceImpl(new ContactDaoImpl());
 
     public static void showMenu() {
         System.out.println("1.Add contact;");
