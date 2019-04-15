@@ -2,6 +2,8 @@ package dao.impl;
 
 import dao.ContactDao;
 import entity.Contact;
+import exception.AddressBookException;
+import exception.ResponseCode;
 
 import java.util.Objects;
 
@@ -11,7 +13,8 @@ public class ContactDaoImpl implements ContactDao {
 
     private Contact[] store = new Contact[10];
 
-    public void saveContact(Contact contact) {
+    public void saveContact(Contact contact) throws AddressBookException {
+        searchSameContact(contact);
         for (int argument = 0; argument < store.length; argument++) {
             if (store[argument] == null) {
                 generator = argument;
@@ -67,7 +70,7 @@ public class ContactDaoImpl implements ContactDao {
     @Override
     public void showContacts() {
         for (Contact contact : getStore()) {
-            if(Objects.nonNull(contact)){
+            if (Objects.nonNull(contact)) {
                 System.out.println(contact.toString());
             }
         }
@@ -87,5 +90,16 @@ public class ContactDaoImpl implements ContactDao {
         return store;
     }
 
+    private void searchSameContact(Contact contact) throws AddressBookException {
+        for (Contact contactFromStore : getStore()) {
+            if (Objects.nonNull(contactFromStore)
+                    && contact.getName().equals(contactFromStore.getName())
+                    && contact.getPhoneNumber().equals(contactFromStore.getPhoneNumber())
+                    && contact.getSurName().equals(contactFromStore.getSurName())) {
+                throw new AddressBookException(ResponseCode.OBJECT_EXIST,
+                        "This contact was added early");
+            }
+        }
+    }
 
 }

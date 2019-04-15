@@ -1,6 +1,7 @@
 package dao;
 
 import entity.Contact;
+import exception.AddressBookException;
 
 public interface ContactDao {
 
@@ -9,7 +10,7 @@ public interface ContactDao {
      *
      * @param contact contact of person
      */
-    void saveContact(Contact contact);
+    void saveContact(Contact contact) throws AddressBookException;
 
     /**
      * Search contact by id.

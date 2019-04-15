@@ -2,6 +2,7 @@ package service.impl;
 
 import dao.ContactDao;
 import entity.Contact;
+import exception.AddressBookException;
 import service.ContactService;
 
 import java.util.Objects;
@@ -15,7 +16,7 @@ public class ContactServiceImpl implements ContactService {
         this.contactDao = contactDao;
     }
 
-    public Contact addContact(Scanner scanner) {
+    public Contact addContact(Scanner scanner) throws AddressBookException {
         Contact contact = new Contact();
 
         System.out.println("Enter please name of your contact person:");
@@ -45,7 +46,7 @@ public class ContactServiceImpl implements ContactService {
     }
 
     @Override
-    public Contact updateContactById(Scanner scanner) {
+    public Contact updateContactById(Scanner scanner) throws AddressBookException {
         Contact contact = new Contact();
         if (Objects.isNull(getContact(scanner))) {
             contact = getContactByName(scanner);

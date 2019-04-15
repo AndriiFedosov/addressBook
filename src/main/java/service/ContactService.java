@@ -2,6 +2,7 @@ package service;
 
 import dao.impl.ContactDaoImpl;
 import entity.Contact;
+import exception.AddressBookException;
 import service.impl.ContactServiceImpl;
 
 import java.util.Scanner;
@@ -28,7 +29,7 @@ public interface ContactService {
      * @return contact that will be created.
      */
 
-    Contact addContact(Scanner scanner);
+    Contact addContact(Scanner scanner) throws AddressBookException;
 
     /**
      * Return contact by id in address book
@@ -44,7 +45,7 @@ public interface ContactService {
      * @param scanner scanner of console input.
      * @return updated contact
      */
-    Contact updateContactById(Scanner scanner);
+    Contact updateContactById(Scanner scanner) throws AddressBookException;
 
     /**
      * Delete contact.
