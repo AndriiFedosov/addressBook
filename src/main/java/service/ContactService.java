@@ -37,7 +37,7 @@ public interface ContactService {
      * @param scanner scanner of console input.
      * @return searched contact
      */
-    Contact getContact(Scanner scanner);
+    Contact getContact(Scanner scanner) throws AddressBookException;
 
     /**
      * Update contact .
@@ -52,7 +52,7 @@ public interface ContactService {
      *
      * @param scanner scanner of console input.
      */
-    void deleteContact(Scanner scanner);
+    void deleteContact(Scanner scanner) throws AddressBookException;
 
     /**
      * Show all contacts.
@@ -64,5 +64,5 @@ public interface ContactService {
      *
      * @param scanner scanner of console input.
      */
-    void deleteContactByEntity(Scanner scanner);
+    void deleteContactByEntity(Scanner scanner) throws AddressBookException;
 }

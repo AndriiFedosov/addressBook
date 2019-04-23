@@ -3,10 +3,13 @@ package service.impl;
 import dao.ContactDao;
 import entity.Contact;
 import exception.AddressBookException;
+import constants.ResponseCode;
 import service.ContactService;
 
 import java.util.Objects;
 import java.util.Scanner;
+
+import static constants.ConstantsMessages.*;
 
 public class ContactServiceImpl implements ContactService {
 
@@ -39,10 +42,18 @@ public class ContactServiceImpl implements ContactService {
     }
 
     @Override
-    public Contact getContact(Scanner scanner) {
+    public Contact getContact(Scanner scanner) throws AddressBookException {
         System.out.println("Pleas enter number of contact in your address book");
-        int id = scanner.nextInt();
-        return contactDao.getContactById(id);
+        if (scanner.hasNext()) {
+            if (scanner.hasNextInt()) {
+                int id = scanner.nextInt();
+                return contactDao.getContactById(id);
+            } else {
+                System.out.println("You enter not number, pleas enter number");
+                scanner.next();
+            }
+        }
+        throw new AddressBookException(ResponseCode.SERVER_ERROR, "You enter wrong data,pleas enter number.");
     }
 
     @Override
@@ -51,29 +62,38 @@ public class ContactServiceImpl implements ContactService {
         if (Objects.isNull(getContact(scanner))) {
             contact = getContactByName(scanner);
             if (Objects.isNull(contact)) {
-                System.out.println("Contact not found;");
-                System.out.println("Maybe you want to create this contact?\n1.Yes\n2.No");
-                int chosing = scanner.nextInt();
-                if (chosing == 1) {
-                    return addContact(scanner);
+                System.out.println(CONTACT_NOT_FOUND);
+                System.out.println(CHOSE_TO_CREATE);
+                if (scanner.hasNextInt()) {
+                    int chosing = scanner.nextInt();
+                    if (chosing == 1) {
+                        return addContact(scanner);
+                    } else {
+                        return contact;
+                    }
                 } else {
-                    return null;
+                    System.out.println(WRONG_DATA_INPUT);
+                    scanner.next();
                 }
             }
         }
-        System.out.println("Enter Pleas field that you want to change:");
+        System.out.println(FIELD_CHOSEN);
         return contactDao.updateContact(modifierFields(scanner, contact));
     }
 
-    private Contact getContactByName(Scanner scanner) {
+    private Contact getContactByName(Scanner scanner) throws AddressBookException {
         return contactDao.getContactByName(scanner.next());
     }
 
 
     @Override
-    public void deleteContact(Scanner scanner) {
-        System.out.println("Enter number of contact that will be deleted:");
-        contactDao.deleteById(scanner.nextInt());
+    public void deleteContact(Scanner scanner) throws AddressBookException {
+        System.out.println(NUMBER_TO_DELETE_CONTACT);
+        if (scanner.hasNextInt()) {
+            contactDao.deleteById(scanner.nextInt());
+        } else {
+            System.out.println(WRONG_DATA_INPUT);
+        }
     }
 
     @Override
@@ -82,34 +102,40 @@ public class ContactServiceImpl implements ContactService {
     }
 
     @Override
-    public void deleteContactByEntity(Scanner scanner) {
-        System.out.println("Enter number of contact for deleting:");
+    public void deleteContactByEntity(Scanner scanner) throws AddressBookException {
+        System.out.println(NUMBER_TO_DELETE_CONTACT);
         contactDao.deleteContactByEntity(getContact(scanner));
 
     }
 
     private Contact modifierFields(Scanner scanner, Contact contact) {
         showFieldToModifier();
-        int number = scanner.nextInt();
-        switch (number) {
-            case ContactService.NAME: {
-                return modifierOneField(ContactService.NAME, contact, scanner);
+        if (scanner.hasNextInt()) {
+            int number = scanner.nextInt();
+            switch (number) {
+                case ContactService.NAME: {
+                    return modifierOneField(ContactService.NAME, contact, scanner);
+                }
+                case ContactService.SUR_NAME: {
+                    return modifierOneField(ContactService.SUR_NAME, contact, scanner);
+                }
+                case ContactService.PHONE_NUMBER: {
+                    return modifierOneField(ContactService.SUR_NAME, contact, scanner);
+                }
+                default: {
+                    System.out.println(NOTHING_TO_CHANGE);
+                    return contact;
+                }
             }
-            case ContactService.SUR_NAME: {
-                return modifierOneField(ContactService.SUR_NAME, contact, scanner);
-            }
-            case ContactService.PHONE_NUMBER: {
-                return modifierOneField(ContactService.SUR_NAME, contact, scanner);
-            }
-            default: {
-                System.out.println("Sorry, nothing to change");
-                return contact;
-            }
+        } else {
+            System.out.println(WRONG_DATA_INPUT);
+            scanner.next();
         }
+        return contact;
     }
 
     private Contact modifierOneField(int field, Contact contact, Scanner scanner) {
-        System.out.println("Enter new value of chosen field:");
+        System.out.println(VALUE_OF_CHOSEN_FIELD);
         String variable = scanner.nextLine();
         switch (field) {
             case ContactService.NAME: {

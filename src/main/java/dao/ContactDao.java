@@ -18,7 +18,7 @@ public interface ContactDao {
      * @param contactId id of contact
      * @return contact
      */
-    Contact getContactById(int contactId);
+    Contact getContactById(int contactId) throws AddressBookException;
 
     /**
      * Search contact by name.
@@ -26,7 +26,7 @@ public interface ContactDao {
      * @param name name of contact
      * @return contact
      */
-    Contact getContactByName(String name);
+    Contact getContactByName(String name) throws AddressBookException;
 
     /**
      * Update contact in your store.
@@ -41,7 +41,7 @@ public interface ContactDao {
      *
      * @param id id of contact
      */
-    void deleteById(int id);
+    void deleteById(int id) throws AddressBookException;
 
     /**
      * Show all contacts.
@@ -53,5 +53,5 @@ public interface ContactDao {
      *
      * @param contact contact that will be deleted
      */
-    void deleteContactByEntity(Contact contact);
+    void deleteContactByEntity(Contact contact) throws AddressBookException;
 }

@@ -1,11 +1,13 @@
 package service;
 
+import entity.Contact;
 import exception.AddressBookException;
-import exception.ResponseCode;
+import constants.ResponseCode;
 
-import java.io.IOException;
-import java.util.InputMismatchException;
+import java.util.Objects;
 import java.util.Scanner;
+
+import static constants.ConstantsMessages.NOTHING_TO_UPDATE;
 
 public interface CommandLineService {
     /**
@@ -32,46 +34,51 @@ public interface CommandLineService {
             try {
                 System.out.println("Chose your wish:");
                 showMenu();
-                int numberOfMenu = scanner.nextInt();
-                switch (numberOfMenu) {
-                    case 1: {
-                        service.addContact(scanner);
-                        break;
+                if (scanner.hasNextInt()) {
+                    switch (scanner.nextInt()) {
+                        case 1: {
+                            service.addContact(scanner);
+                            break;
+                        }
+                        case 2: {
+                            Contact contact = service.updateContactById(scanner);
+                            if(Objects.nonNull(contact.getId())){
+                                System.out.println(contact);
+                            }else {
+                                System.out.println(NOTHING_TO_UPDATE);
+                            }
+
+                            break;
+                        }
+                        case 3: {
+                            service.deleteContact(scanner);
+                            break;
+                        }
+                        case 4: {
+                            service.showContacts();
+                            break;
+                        }
+                        case 5: {
+                            System.out.println(service.getContact(scanner));
+                            break;
+                        }
+                        case 0: {
+                            System.out.println("Thank you that use our app. Good bye.");
+                            exit = false;
+                            break;
+                        }
+                        default: {
+                            throw new AddressBookException(ResponseCode.WRONG_DATA_TYPE,
+                                    "You enter wrong number of operation.");
+                        }
                     }
-                    case 2: {
-                        System.out.println(service.updateContactById(scanner));
-                        break;
-                    }
-                    case 3: {
-                        service.deleteContact(scanner);
-                        break;
-                    }
-                    case 4: {
-                        service.showContacts();
-                        break;
-                    }
-                    case 5: {
-                        System.out.println(service.getContact(scanner));
-                        break;
-                    }
-                    case 0: {
-                        System.out.println("Thank you that use our app. Good bye.");
-                        exit = false;
-                        break;
-                    }
-                    default: {
-                        throw new AddressBookException(ResponseCode.WRONG_DATA_TYPE,
-                                "");
-                    }
+                } else {
+                    System.out.println("you enter wrong number");
+                    scanner.next();
                 }
             } catch (AddressBookException e) {
-                if (e.getCode().equals(ResponseCode.NOT_FOUND)) {
-                    System.out.println("Sorry you enter wrong number of operation");
-                } else if (e.getCode().equals(ResponseCode.OBJECT_EXIST)) {
-                    System.out.println("Sorry your addresat was added early");
-                }
+                System.out.println(e.getMessage());
             }
-
         } while (exit);
     }
 }

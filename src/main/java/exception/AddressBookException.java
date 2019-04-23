@@ -1,6 +1,6 @@
 package exception;
 
-import entity.Contact;
+import constants.ResponseCode;
 
 public class AddressBookException extends Exception {
 

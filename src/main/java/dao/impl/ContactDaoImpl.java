@@ -3,90 +3,70 @@ package dao.impl;
 import dao.ContactDao;
 import entity.Contact;
 import exception.AddressBookException;
-import exception.ResponseCode;
+import constants.ResponseCode;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 public class ContactDaoImpl implements ContactDao {
 
-    public static int generator = 0;
-
-    private Contact[] store = new Contact[10];
+    private List<Contact> store = new ArrayList<>();
 
     public void saveContact(Contact contact) throws AddressBookException {
         searchSameContact(contact);
-        for (int argument = 0; argument < store.length; argument++) {
-            if (store[argument] == null) {
-                generator = argument;
-                contact.setId(++generator);
-                store[argument] = contact;
-                System.out.println("This contact was added in your contact book");
-                System.out.println(contact.toString());
-                break;
-            }
+        contact.setId(store.size() + 1);
+        store.add(contact);
+        System.out.println("This contact was added in your contact book");
+        System.out.println(contact.toString());
+    }
+
+    @Override
+    public Contact getContactById(int contactId) throws AddressBookException {
+        Contact contact = store.size() > contactId ? store.get(contactId - 1) : null;
+        if (Objects.isNull(contact)) {
+            throw new AddressBookException(ResponseCode.NOT_FOUND,
+                    " Contact with this number not found.");
+        } else {
+            return contact;
         }
     }
 
     @Override
-    public Contact getContactById(int contactId) {
-        for (Contact storeContacts : getStore()) {
-            if (storeContacts.getId() == contactId) {
-                return storeContacts;
-            }
-        }
-        return null;
-    }
-
-    @Override
-    public Contact getContactByName(String name) {
+    public Contact getContactByName(String name) throws AddressBookException {
         for (Contact storeContacts : getStore()) {
             if (storeContacts.getName().toLowerCase().equals(name.toLowerCase())) {
                 return storeContacts;
             }
         }
-        return null;
+        throw new AddressBookException(ResponseCode.NOT_FOUND, "Not found contact");
     }
 
     @Override
     public Contact updateContact(Contact contact) {
-        for (Contact storeContacts : getStore()) {
-            if (Objects.equals(storeContacts.getId(), contact.getId())) {
-                storeContacts = contact;
-                return storeContacts;
-            }
-        }
+        store.set(contact.getId() - 1, contact);
         return contact;
     }
 
     @Override
-    public void deleteById(int id) {
-        for (Contact storeContacts : getStore()) {
-            if (storeContacts.getId() == id) {
-                storeContacts = null;
-            }
-        }
+    public void deleteById(int id) throws AddressBookException {
+        store.remove(getContactById(id));
     }
 
     @Override
     public void showContacts() {
         for (Contact contact : getStore()) {
-            if (Objects.nonNull(contact)) {
-                System.out.println(contact.toString());
-            }
+            System.out.println(contact.toString());
         }
 
     }
 
     @Override
-    public void deleteContactByEntity(Contact contact) {
-        for (Contact storeContacts : getStore()) {
-            if (storeContacts.equals(contact)) {
-                storeContacts = null;
-            }
-        }
+    public void deleteContactByEntity(Contact contact) throws AddressBookException {
+        store.remove(getContactById(contact.getId()));
     }
 
-    private Contact[] getStore() {
+    private List<Contact> getStore() {
         return store;
     }
 

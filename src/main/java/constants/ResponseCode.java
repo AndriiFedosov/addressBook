@@ -1,4 +1,4 @@
-package exception;
+package constants;
 
 public enum ResponseCode {
     NOT_FOUND(404),
