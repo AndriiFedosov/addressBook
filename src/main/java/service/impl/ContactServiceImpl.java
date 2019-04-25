@@ -28,7 +28,7 @@ public class ContactServiceImpl implements ContactService {
 
         System.out.println("Enter please sur name of your contact person:");
         String surName = scanner.next();
-        contact.setSurName(surName);
+        contact.setLastName(surName);
 
         System.out.println("Enter please phone number of your contact person");
         String phoneNumber = scanner.next().replaceAll("[^0-9+]", "");
@@ -143,7 +143,7 @@ public class ContactServiceImpl implements ContactService {
                 break;
             }
             case ContactService.SUR_NAME: {
-                contact.setSurName(variable);
+                contact.setLastName(variable);
                 break;
             }
             case ContactService.PHONE_NUMBER: {

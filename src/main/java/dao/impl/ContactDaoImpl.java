@@ -1,9 +1,9 @@
 package dao.impl;
 
+import constants.ResponseCode;
 import dao.ContactDao;
 import entity.Contact;
 import exception.AddressBookException;
-import constants.ResponseCode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -50,7 +50,11 @@ public class ContactDaoImpl implements ContactDao {
 
     @Override
     public void deleteById(int id) throws AddressBookException {
-        store.remove(getContactById(id));
+        store.forEach(item -> {
+            if (item.getId() == id) {
+                store.remove(item);
+            }
+        });
     }
 
     @Override
@@ -75,7 +79,7 @@ public class ContactDaoImpl implements ContactDao {
             if (Objects.nonNull(contactFromStore)
                     && contact.getName().equals(contactFromStore.getName())
                     && contact.getPhoneNumber().equals(contactFromStore.getPhoneNumber())
-                    && contact.getSurName().equals(contactFromStore.getSurName())) {
+                    && contact.getLastName().equals(contactFromStore.getLastName())) {
                 throw new AddressBookException(ResponseCode.OBJECT_EXIST,
                         "This contact was added early");
             }

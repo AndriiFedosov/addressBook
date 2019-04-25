@@ -4,15 +4,15 @@ package entity;
 public class Contact {
     private int id;
     private String name;
-    private String surName;
+    private String LastName;
     private String phoneNumber;
 
     public Contact() {
     }
 
-    public Contact(String name, String surName, String phoneNumber) {
+    public Contact(String name, String LastName, String phoneNumber) {
         this.name = name;
-        this.surName = surName;
+        this.LastName = LastName;
         this.phoneNumber = phoneNumber;
     }
 
@@ -32,12 +32,12 @@ public class Contact {
         this.name = name;
     }
 
-    public String getSurName() {
-        return surName;
+    public String getLastName() {
+        return LastName;
     }
 
-    public void setSurName(String surName) {
-        this.surName = surName;
+    public void setLastName(String lastName) {
+        this.LastName = lastName;
     }
 
     public String getPhoneNumber() {
@@ -57,7 +57,7 @@ public class Contact {
 
         if (id != contact.id) return false;
         if (name != null ? !name.equals(contact.name) : contact.name != null) return false;
-        if (surName != null ? !surName.equals(contact.surName) : contact.surName != null) return false;
+        if (LastName != null ? !LastName.equals(contact.LastName) : contact.LastName != null) return false;
         return phoneNumber != null ? phoneNumber.equals(contact.phoneNumber) : contact.phoneNumber == null;
     }
 
@@ -65,7 +65,7 @@ public class Contact {
     public int hashCode() {
         int result = id;
         result = 31 * result + (name != null ? name.hashCode() : 0);
-        result = 31 * result + (surName != null ? surName.hashCode() : 0);
+        result = 31 * result + (LastName != null ? LastName.hashCode() : 0);
         result = 31 * result + (phoneNumber != null ? phoneNumber.hashCode() : 0);
         return result;
     }
@@ -75,7 +75,7 @@ public class Contact {
         return "Contact{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
-                ", surName='" + surName + '\'' +
+                ", LastName='" + LastName + '\'' +
                 ", phoneNumber='" + phoneNumber + '\'' +
                 '}';
     }
