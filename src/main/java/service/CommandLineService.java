@@ -41,13 +41,7 @@ public interface CommandLineService {
                             break;
                         }
                         case 2: {
-                            Contact contact = service.updateContactById(scanner);
-                            if(Objects.nonNull(contact.getId())){
-                                System.out.println(contact);
-                            }else {
-                                System.out.println(NOTHING_TO_UPDATE);
-                            }
-
+                            service.updateContactById(scanner);
                             break;
                         }
                         case 3: {

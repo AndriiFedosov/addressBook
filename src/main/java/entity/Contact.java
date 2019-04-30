@@ -1,7 +1,10 @@
 package entity;
 
 
-public class Contact {
+import java.util.Comparator;
+import java.util.Objects;
+
+public class Contact implements Comparable<Contact> {
     private int id;
     private String name;
     private String LastName;
@@ -55,16 +58,14 @@ public class Contact {
 
         Contact contact = (Contact) o;
 
-        if (id != contact.id) return false;
-        if (name != null ? !name.equals(contact.name) : contact.name != null) return false;
-        if (LastName != null ? !LastName.equals(contact.LastName) : contact.LastName != null) return false;
-        return phoneNumber != null ? phoneNumber.equals(contact.phoneNumber) : contact.phoneNumber == null;
+        if (!Objects.equals(name, contact.name)) return false;
+        if (!Objects.equals(LastName, contact.LastName)) return false;
+        return Objects.equals(phoneNumber, contact.phoneNumber);
     }
 
     @Override
     public int hashCode() {
-        int result = id;
-        result = 31 * result + (name != null ? name.hashCode() : 0);
+        int result = name != null ? name.hashCode() : 0;
         result = 31 * result + (LastName != null ? LastName.hashCode() : 0);
         result = 31 * result + (phoneNumber != null ? phoneNumber.hashCode() : 0);
         return result;
@@ -78,5 +79,10 @@ public class Contact {
                 ", LastName='" + LastName + '\'' +
                 ", phoneNumber='" + phoneNumber + '\'' +
                 '}';
+    }
+
+    @Override
+    public int compareTo(Contact o) {
+        return this.name.compareTo(o.getName());
     }
 }

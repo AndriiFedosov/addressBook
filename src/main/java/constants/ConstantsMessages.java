@@ -9,4 +9,7 @@ public class ConstantsMessages {
     public static final String CHOSE_TO_CREATE = "Maybe you want to create this contact?\n1.Yes\n2.No";
     public static final String NOTHING_TO_UPDATE = "Nothing to update";
     public static final String FIELD_CHOSEN = "Enter Pleas field that you want to change:";
+    public static final String OBJECT_EXIST_MESSAGE = "This contact is present";
+    public static final String NOT_FOUND_MESSAGE = "This contact not found";;
+
 }

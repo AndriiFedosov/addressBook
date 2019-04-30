@@ -58,24 +58,12 @@ public class ContactServiceImpl implements ContactService {
 
     @Override
     public Contact updateContactById(Scanner scanner) throws AddressBookException {
-        Contact contact = new Contact();
-        if (Objects.isNull(getContact(scanner))) {
+        Contact contact = null;
+        if (scanner.hasNextInt()) {
             contact = getContactByName(scanner);
-            if (Objects.isNull(contact)) {
-                System.out.println(CONTACT_NOT_FOUND);
-                System.out.println(CHOSE_TO_CREATE);
-                if (scanner.hasNextInt()) {
-                    int chosing = scanner.nextInt();
-                    if (chosing == 1) {
-                        return addContact(scanner);
-                    } else {
-                        return contact;
-                    }
-                } else {
-                    System.out.println(WRONG_DATA_INPUT);
-                    scanner.next();
-                }
-            }
+        } else {
+            System.out.println(WRONG_DATA_INPUT);
+            scanner.next();
         }
         System.out.println(FIELD_CHOSEN);
         return contactDao.updateContact(modifierFields(scanner, contact));
@@ -105,7 +93,6 @@ public class ContactServiceImpl implements ContactService {
     public void deleteContactByEntity(Scanner scanner) throws AddressBookException {
         System.out.println(NUMBER_TO_DELETE_CONTACT);
         contactDao.deleteContactByEntity(getContact(scanner));
-
     }
 
     private Contact modifierFields(Scanner scanner, Contact contact) {
