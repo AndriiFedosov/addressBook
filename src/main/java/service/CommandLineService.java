@@ -1,78 +1,98 @@
 package service;
 
-import entity.Contact;
-import exception.AddressBookException;
+import constants.MassageApp;
 import constants.ResponseCode;
+import dao.impl.ConnectionDB;
+import exception.AddressBookException;
+import service.impl.ContactServiceImpl;
 
-import java.util.Objects;
-import java.util.Scanner;
-
-import static constants.ConstantsMessages.NOTHING_TO_UPDATE;
+import java.io.BufferedReader;
+import java.io.IOException;
 
 public interface CommandLineService {
+
     /**
-     * Method that show items of menu.
+     * Method displayed actions menu.
      */
     static void showMenu() {
-        System.out.println("1.Add contact;");
-        System.out.println("2.Update contact;");
-        System.out.println("3.Delete contact;");
-        System.out.println("4.Show all contacts");
-        System.out.println("5.Show contact by id");
-        System.out.println("0.Exit.");
+        System.out.println("1.Add contact.");
+        System.out.println("2.Update contact. ");
+        System.out.println("3.Delete contact.");
+        System.out.println("4.Show all contact.");
+        System.out.println("0.Exit.;");
     }
 
     /**
-     * Endpoint for begin our program.
+     * Method is start work application
      *
-     * @param scanner scanner of console input
-     * @param service service that work with dao layer.
+     * @param readerKeyboard takes keyboard input
+     * @param service        pass readerKeyboard for implementation
      */
-    static void run(Scanner scanner, ContactService service) {
+    static void run(BufferedReader readerKeyboard, ContactServiceImpl service) {
+
+        int numberOfMenu;
         boolean exit = true;
         do {
+            System.out.println("Choose action: ");
+            showMenu();
+
             try {
-                System.out.println("Chose your wish:");
-                showMenu();
-                if (scanner.hasNextInt()) {
-                    switch (scanner.nextInt()) {
+                String stringTemp = readerKeyboard.readLine();
+                if (isCorrectInteger(stringTemp)) {
+                    numberOfMenu = Integer.parseInt(stringTemp);
+                    switch (numberOfMenu) {
                         case 1: {
-                            service.addContact(scanner);
+                            service.addContact(readerKeyboard);
                             break;
                         }
                         case 2: {
-                            service.updateContactById(scanner);
+                            service.updateContact(readerKeyboard);
                             break;
                         }
                         case 3: {
-                            service.deleteContact(scanner);
+                            service.deleteContact(readerKeyboard);
                             break;
                         }
                         case 4: {
-                            service.showContacts();
-                            break;
-                        }
-                        case 5: {
-                            System.out.println(service.getContact(scanner));
+                            service.showAllContacts(readerKeyboard);
                             break;
                         }
                         case 0: {
-                            System.out.println("Thank you that use our app. Good bye.");
+                            System.out.println("Thank you that used our app. Good bay.");
                             exit = false;
+                            ConnectionDB.closeConection();
                             break;
                         }
                         default: {
-                            throw new AddressBookException(ResponseCode.WRONG_DATA_TYPE,
-                                    "You enter wrong number of operation.");
+                            System.out.println("You entered invalid number. Repeat please.");
                         }
                     }
-                } else {
-                    System.out.println("you enter wrong number");
-                    scanner.next();
                 }
-            } catch (AddressBookException e) {
-                System.out.println(e.getMessage());
+            } catch (AddressBookException | IOException e) {
+                System.out.println("Exception: " + e.getMessage());
             }
-        } while (exit);
+        }
+        while (exit);
+    }
+
+    static boolean isCorrectInteger(String str) {
+        try {
+            Integer.parseInt(str);
+        } catch (NumberFormatException | NullPointerException e) {
+            System.out.println(ResponseCode.WRONG_DATA_TYPE + " " + MassageApp.DATA_TYPE_IS_NOT_NUMBER);
+            return false;
+        }
+        return true;
+    }
+
+    static boolean isCorrectDouble(String str) {
+        try {
+            Double.parseDouble(str);
+        } catch (NumberFormatException | NullPointerException e) {
+            System.out.println(ResponseCode.WRONG_DATA_TYPE + " " + MassageApp.DATA_TYPE_IS_NOT_NUMBER);
+            return false;
+        }
+        return true;
     }
 }
+

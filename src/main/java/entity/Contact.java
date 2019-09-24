@@ -1,22 +1,32 @@
 package entity;
 
 
+import java.time.LocalDateTime;
 import java.util.Comparator;
 import java.util.Objects;
 
 public class Contact implements Comparable<Contact> {
     private int id;
     private String name;
-    private String LastName;
+    private String lastName;
+    private int age;
     private String phoneNumber;
+    private boolean married;
+    private LocalDateTime createDate;
+    private LocalDateTime updateTime;
 
-    public Contact() {
+    public Contact(String name, String lastName, int age, String phoneNumber,
+                   boolean married, LocalDateTime createDate, LocalDateTime updateTime) {
+        this.name = name;
+        this.lastName = lastName;
+        this.age = age;
+        this.phoneNumber = phoneNumber;
+        this.married = married;
+        this.createDate = createDate;
+        this.updateTime = updateTime;
     }
 
-    public Contact(String name, String LastName, String phoneNumber) {
-        this.name = name;
-        this.LastName = LastName;
-        this.phoneNumber = phoneNumber;
+    public Contact() {
     }
 
     public int getId() {
@@ -36,11 +46,19 @@ public class Contact implements Comparable<Contact> {
     }
 
     public String getLastName() {
-        return LastName;
+        return lastName;
     }
 
     public void setLastName(String lastName) {
-        this.LastName = lastName;
+        this.lastName = lastName;
+    }
+
+    public int getAge() {
+        return age;
+    }
+
+    public void setAge(int age) {
+        this.age = age;
     }
 
     public String getPhoneNumber() {
@@ -51,24 +69,48 @@ public class Contact implements Comparable<Contact> {
         this.phoneNumber = phoneNumber;
     }
 
+    public boolean isMarried() {
+        return married;
+    }
+
+    public void setMarried(boolean married) {
+        this.married = married;
+    }
+
+    public LocalDateTime getCreateDate() {
+        return createDate;
+    }
+
+    public void setCreateDate(LocalDateTime createDate) {
+        this.createDate = createDate;
+    }
+
+    public LocalDateTime getUpdateTime() {
+        return updateTime;
+    }
+
+    public void setUpdateTime(LocalDateTime updateTime) {
+        this.updateTime = updateTime;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-
         Contact contact = (Contact) o;
-
-        if (!Objects.equals(name, contact.name)) return false;
-        if (!Objects.equals(LastName, contact.LastName)) return false;
-        return Objects.equals(phoneNumber, contact.phoneNumber);
+        return id == contact.id &&
+                age == contact.age &&
+                phoneNumber.equals(contact.phoneNumber) &&
+                married == contact.married &&
+                Objects.equals(name, contact.name) &&
+                Objects.equals(lastName, contact.lastName) &&
+                Objects.equals(createDate, contact.createDate) &&
+                Objects.equals(updateTime, contact.updateTime);
     }
 
     @Override
     public int hashCode() {
-        int result = name != null ? name.hashCode() : 0;
-        result = 31 * result + (LastName != null ? LastName.hashCode() : 0);
-        result = 31 * result + (phoneNumber != null ? phoneNumber.hashCode() : 0);
-        return result;
+        return Objects.hash(id, name, lastName, age, phoneNumber, married, createDate, updateTime);
     }
 
     @Override
@@ -76,8 +118,12 @@ public class Contact implements Comparable<Contact> {
         return "Contact{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
-                ", LastName='" + LastName + '\'' +
-                ", phoneNumber='" + phoneNumber + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", age=" + age +
+                ", phoneNumber=" + phoneNumber +
+                ", married=" + married +
+                ", createDate=" + createDate +
+                ", updateTime=" + updateTime +
                 '}';
     }
 
