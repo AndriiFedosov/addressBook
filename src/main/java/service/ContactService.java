@@ -1,68 +1,47 @@
 package service;
 
-import dao.impl.ContactDaoImpl;
 import entity.Contact;
 import exception.AddressBookException;
-import service.impl.ContactServiceImpl;
 
-import java.util.Scanner;
+import java.io.BufferedReader;
+import java.io.IOException;
 
 public interface ContactService {
 
-    /**
-     * Name parameter constant
-     */
-    int NAME = 1;
-    /**
-     * Sur name parameter constant
-     */
-    int SUR_NAME = 2;
-    /**
-     * Phone number parameter constant
-     */
-    int PHONE_NUMBER = 3;
+    int NAME_BUTTON = 1;
+    int LAST_NAME_BUTTON = 2;
+    int PHONE_NUMBER_BUTTON = 3;
+    int AGE_BUTTON = 4;
+    int HEIGHT_BUTTON = 5;
+    int MARRIED_BUTTON = 6;
+    int EXIT_BUTTON = 0;
 
     /**
-     * Save created  contact in store.
+     * This method created new contact in address book.
      *
-     * @param scanner scanner of console input.
-     * @return contact that will be created.
+     * @param readerKeyboard takes keyboard input
      */
-
-    Contact addContact(Scanner scanner) throws AddressBookException;
+    void addContact(BufferedReader readerKeyboard) throws IOException, AddressBookException;
 
     /**
-     * Return contact by id in address book
+     * This method update contact of address book.
      *
-     * @param scanner scanner of console input.
-     * @return searched contact
+     * @param readerKeyboard takes keyboard input
+     * @return
      */
-    Contact getContact(Scanner scanner) throws AddressBookException;
+    Contact updateContact(BufferedReader readerKeyboard) throws IOException, AddressBookException;
 
     /**
-     * Update contact .
+     * This method delete contact of address book.
      *
-     * @param scanner scanner of console input.
-     * @return updated contact
+     * @param readerKeyboard takes keyboard input
      */
-    Contact updateContactById(Scanner scanner) throws AddressBookException;
+    void deleteContact(BufferedReader readerKeyboard) throws IOException, AddressBookException;
 
     /**
-     * Delete contact.
+     * This method print all contacts.
      *
-     * @param scanner scanner of console input.
+     * @param readerKeyboard takes keyboard input
      */
-    void deleteContact(Scanner scanner) throws AddressBookException;
-
-    /**
-     * Show all contacts.
-     */
-    void showContacts();
-
-    /**
-     * Delete contact by entity.
-     *
-     * @param scanner scanner of console input.
-     */
-    void deleteContactByEntity(Scanner scanner) throws AddressBookException;
+    void showAllContacts(BufferedReader readerKeyboard) throws AddressBookException;
 }
